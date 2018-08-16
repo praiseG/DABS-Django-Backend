@@ -41,6 +41,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    # app modules
+    'accounts',
+
+    # app packages
     'rest_framework',
 ]
 
@@ -128,3 +132,4 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+AUTH_USER_MODEL = 'ccounts.MyUser'
