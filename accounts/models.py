@@ -2,18 +2,25 @@ from django.db import models
 
 # Create your models here.
 from django.contrib.auth.models import PermissionsMixin, AbstractBaseUser, BaseUserManager
+from django.utils import timezone
+
 
 class MyUserManager(BaseUserManager):
-    def create_user(self, email, name, designation, password):
-        user = self.model(email=email, name=name, designation=designation, password=password)
+    def create_user(self, email, name, designation, password, **kwargs):
+        now = timezone.local(timezone.now())
+        user = self.model\
+            (
+                email=email,
+                name=name,
+                designation=designation,
+                password=password,
+                last_login=now, **kwargs)
         user.set_password(password)
-        user.is_staff = True
-        user.is_active
         user.is_superuser = False
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, email, name, designation, password):
+    def create_superuser(self, email, name, designation, password, **kwargs):
         user = self.create_user(email=email, name=name, designation=designation, password=password)
         user.is_active = True
         user.is_staff = True
@@ -27,11 +34,18 @@ class MyUserManager(BaseUserManager):
 
 
 class MyUser(AbstractBaseUser):
+    RCHOICES = (
+        ('doctor', 'Doctor'),
+        ('manager', 'Manager'),
+        ('helpdesk', 'Helpdesk'),
+    )
     email = models.EmailField(unique=True)
     name = models.CharField(max_length=100, unique=True)
     designation = models.CharField(max_length=100)
-    is_doctor = models.BooleanField(default=False)
-    is_admin = models.BooleanField(default=False)
+    role = models.CharField(max_length=6, choices=RCHOICES, blank=True, null=True)
+    is_staff = models.BooleanField(default=False)
+    is_superuser = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now=False, auto_now_add=True)
 
     object = MyUserManager()
@@ -44,8 +58,30 @@ class MyUser(AbstractBaseUser):
     def __str__(self):
         return self.name
 
+    @property
+    def shortname(self):
+        return self.email
+
+    def get_full_name(self):
+        return self.name
+
     def get_short_name(self):
         return self.email
 
+    def has_perm(self, perm, obj=None):
+        return self.is_superuser
+
+    def has_module_perms(self, app_label):
+        return self.is_superuser
+
     def natural_key(self):
         return self.email
+
+    def is_doctor(self):
+        return self.role == 'doctor' and not self.is_superuser
+
+    def is_manager(self):
+        return self.role == 'manager' and not self.is_superuser
+
+    def is_helpdesk(self):
+        return self.role == 'helpdesk' and not self.is_superuser
