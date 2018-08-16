@@ -26,7 +26,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'uwb2bf-sr6ibw&c&1*tz43d#+2%mo0ot=)iy=$pp=ogw8rbpu#'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = os.environ.get('DEBUG', False)
 
 ALLOWED_HOSTS = []
 
@@ -80,8 +80,12 @@ WSGI_APPLICATION = 'dabs.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': os.environ.get('DATABASE_ENGINE'),
+        'NAME': os.environ.get('DATABASE_NAME'),
+        'USER': os.environ.get('DATABASE_USER'),
+        'PASSWORD': os.environ.get('DATABASE_PASS'),
+        'HOST': os.environ.get('DATABASE_HOST', '127.0.0.1'),
+        'PORT': os.environ.get('DATABASE_PORT', '3306'),
     }
 }
 

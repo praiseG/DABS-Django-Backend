@@ -1,9 +1,13 @@
 .idea/
 db.sqlite3
 venv
-node_modules/
-.DS_Store
-mediafiles/
-staticfiles/
 .env
 notes.txt
+__pycache__/
+*.py[cod]
+migrations/
+.DS_Store
+
+**/migrations/**
+!**/migrations
+!**/migrations/__init__.py
