@@ -1,4 +1,4 @@
-# Doctor's Appointment Booking System
+# Doctors' Appointment Booking System
 This Application helps walk-in patients make an appointment with a preferred Doctor.
 
 ## Getting Started
