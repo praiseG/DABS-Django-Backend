@@ -12,4 +12,10 @@ These instructions will get you a copy of the project up and running on your loc
 ### Installation
 A step by step guide on how to get a development environment running
 
+## License
 
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+
+## Acknowledgments
+	* Hat tip to Raymond Besiga for good council
+	* Inspiration
