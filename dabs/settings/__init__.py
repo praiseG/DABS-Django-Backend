@@ -2,5 +2,5 @@ from .base import *
 
 try:
     from .local import *
-except:
+except ImportError:
     pass
