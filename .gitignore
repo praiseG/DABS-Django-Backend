@@ -1,0 +1,9 @@
+.idea/
+db.sqlite3
+venv
+node_modules/
+.DS_Store
+mediafiles/
+staticfiles/
+.env
+notes.txt
