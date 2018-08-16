@@ -24,4 +24,4 @@ A step by step guide on how to get a development environment running
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
 
 ## Credits
-	* Hat tip to Raymond Besiga for good council
+	* Hat tip to Raymond Besiga for his good counsel.
