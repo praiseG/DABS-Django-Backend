@@ -1,16 +1,20 @@
 from django.db import models
 
 # Create your models here.
-from django.contrib.auth.models import PermissionsMixin, AbstractBaseUser, BaseUserManager
+from django.contrib.auth.models import (
+    PermissionsMixin, AbstractBaseUser, BaseUserManager
+)
 from django.utils import timezone
 
 
 class MyUserManager(BaseUserManager):
     def create_user(self, email, name, designation, password, **kwargs):
         now = timezone.local(timezone.now())
+        if not email:
+            raise ValueError('User must have an email address')
         user = self.model\
             (
-                email=email,
+                email=self.normalize_email(email),
                 name=name,
                 designation=designation,
                 password=password,
@@ -39,8 +43,8 @@ class MyUser(AbstractBaseUser):
         ('manager', 'Manager'),
         ('helpdesk', 'Helpdesk'),
     )
-    email = models.EmailField(unique=True)
-    name = models.CharField(max_length=100, unique=True)
+    email = models.EmailField(verbose_name='email address', unique=True, max_length=255)
+    name = models.CharField(max_length=100)
     designation = models.CharField(max_length=100)
     role = models.CharField(max_length=6, choices=RCHOICES, blank=True, null=True)
     is_staff = models.BooleanField(default=False)
@@ -56,14 +60,10 @@ class MyUser(AbstractBaseUser):
         ordering = ['name']
 
     def __str__(self):
-        return self.name
-
-    @property
-    def shortname(self):
         return self.email
 
     def get_full_name(self):
-        return self.name
+        return self.email
 
     def get_short_name(self):
         return self.email
@@ -77,6 +77,7 @@ class MyUser(AbstractBaseUser):
     def natural_key(self):
         return self.email
 
+    @property
     def is_doctor(self):
         return self.role == 'doctor' and not self.is_superuser
 
