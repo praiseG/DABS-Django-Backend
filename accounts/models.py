@@ -80,10 +80,10 @@ class MyUser(AbstractBaseUser):
 
     @property
     def is_doctor(self):
-        return self.role == 'doctor' and not self.is_superuser
+        return self.role == 'doctor'
 
     def is_manager(self):
-        return self.role == 'manager' and not self.is_superuser
+        return self.role == 'manager'
 
     def is_helpdesk(self):
-        return self.role == 'helpdesk' and not self.is_superuser
+        return self.role == 'helpdesk'
