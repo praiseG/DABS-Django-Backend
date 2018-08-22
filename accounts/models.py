@@ -52,7 +52,8 @@ class MyUser(AbstractBaseUser):
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now=False, auto_now_add=True)
 
-    object = MyUserManager()
+    objects = MyUserManager()
+    
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['designation', 'name']
 
