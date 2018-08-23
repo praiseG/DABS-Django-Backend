@@ -29,6 +29,19 @@ class AccountSer(HyperlinkedModelSerializer):
         extra_kwargs = {'password': {'write_only': True}}
 
 
+class UpdateSer(HyperlinkedModelSerializer):
+    class Meta:
+        model = MyUser
+        fields = (
+            'email',
+            'name',
+            'designation',
+            'role',
+            'is_active',
+            'is_superuser',
+            'is_staff',
+        )
+
 
 class PasswordSer(ModelSerializer):
     class Meta:
