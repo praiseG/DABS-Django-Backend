@@ -46,11 +46,11 @@ class MyUser(AbstractBaseUser):
     email = models.EmailField(verbose_name='email address', unique=True, max_length=255)
     name = models.CharField(max_length=100)
     designation = models.CharField(max_length=100)
-    role = models.CharField(max_length=6, choices=RCHOICES, blank=True, null=True)
+    role = models.CharField(max_length=30, choices=RCHOICES, blank=True, null=True)
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
-    created_at = models.DateTimeField(auto_now=False, auto_now_add=True)
+    created_at = models.DateTimeField(auto_now_add=True)
 
     objects = MyUserManager()
     

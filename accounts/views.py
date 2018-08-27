@@ -30,6 +30,9 @@ class AccountViewSet(ListModelMixin,
                      GenericViewSet
                      ):
     queryset = MyUser.objects.all()
+    filter_fields = ['name', 'email', 'role', 'is_staff', 'is_active']
+    ordering_fields = ('name', 'email', )
+    search_fields = ('name', 'email',)
 
     def get_permissions(self):
         print(""""Action""")
@@ -83,21 +86,3 @@ class AccountViewSet(ListModelMixin,
             return Response({'message': 'Password Reset Susseccful'})
         else:
             return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
-
-    @action(methods=['get'], url_path='doctors', detail=False)
-    def get_doctors(self, request):
-        try:
-            doctors = MyUser.objects.filter(role='doctor')
-            serializer = AccountSer(doctors, many=True, context={'request': request})
-            return Response(serializer.data)
-        except ObjectDoesNotExist:
-            return Response({'message':'There are no Doctors Found'}, status=HTTP_404_NOT_FOUND)
-
-    @action(methods=['get'], url_path='staff', detail=False)
-    def get_other_staff(self, request):
-        try:
-            staff = MyUser.objects.exclude(role='doctor')
-            serializer = AccountSer(staff, many=True, context={'request': request})
-            return Response(serializer.data)
-        except ObjectDoesNotExist:
-            return Response({'There are no Non-Doctor Staff Found'}, status=HTTP_404_NOT_FOUND)
