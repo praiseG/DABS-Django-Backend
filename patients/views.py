@@ -10,7 +10,7 @@ from rest_framework.decorators import action
 from .permissions import IsStaffWithRole
 from .serializers import PatientSer
 from .models import Patient
-from appointments.models import Appointment
+from appointments.models import Appointment, Treatment
 
 
 class PatientViewset(ListModelMixin,
@@ -24,7 +24,7 @@ class PatientViewset(ListModelMixin,
     search_fields = ('name', 'email', 'mobile')
 
     def get_permissions(self):
-        if self.action in ['create', 'update']:
+        if self.action in ['create', 'update', 'partial_update']:
             permission_classes = [IsStaffWithRole]
         else:
             permission_classes = [IsAuthenticated]

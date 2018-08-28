@@ -5,8 +5,7 @@ from rest_framework.mixins import (
     ListModelMixin, CreateModelMixin, UpdateModelMixin, RetrieveModelMixin,
 )
 from rest_framework.permissions import (
-   AllowAny,
-   IsAdminUser,IsAuthenticated
+   IsAdminUser
 )
 
 from .permissions import (
@@ -37,9 +36,9 @@ class AccountViewSet(ListModelMixin,
     def get_permissions(self):
         print(""""Action""")
         print(self.action)
-        if self.action in ['create', 'update', 'list', 'get_other_staff']:
-            permission_classes = [IsAdminUser]
-        elif self.action in ['get_doctors', 'retrieve']:
+        # if self.action in ['create', 'update', 'list', 'get_other_staff']:
+        #     permission_classes = [IsAdminUser]
+        if self.action in ['get_doctors', 'retrieve']:
             permission_classes = [IsAdminOrStaff]
         elif self.action == 'reset_password':
             permission_classes = [IsAdminOrIsSelf]
@@ -78,7 +77,7 @@ class AccountViewSet(ListModelMixin,
     @action(methods=['post', 'put'], url_path='reset-password', detail=True)
     def reset_password(self, request, pk=None):
         user = self.get_object()
-        serializer = PasswordSer(data=request.data)
+        serializer = self.get_serializer(data=request.data)
         # add confirm password field to serializer and validators
         if serializer.is_valid():
             user.set_password(serializer.data['password'])

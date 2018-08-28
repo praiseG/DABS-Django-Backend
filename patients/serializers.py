@@ -14,6 +14,7 @@ class PatientSer(HyperlinkedModelSerializer):
             'age',
             'disability',
             'registered_on',
+            'registered_by',
             'url',
         )
-        read_only_fields = ('registered_on', )
+        read_only_fields = ('registered_on', 'registered_by',)

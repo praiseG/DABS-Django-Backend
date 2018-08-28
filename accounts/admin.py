@@ -41,13 +41,6 @@ class MyUserAdmin(BaseUserAdmin):
         ('Personal Info', {'classes': ('wide',), 'fields': ('name', 'designation')}),
         ('Permissions', {'classes': ('wide',), 'fields': ('role', 'is_staff', 'is_superuser', 'is_active')}),
     )
-    # add_fieldsets = (
-    #     (
-    #         None, {
-    #             'classes': ('wide',),
-    #             'fields': ('email', 'name', 'designation', 'role', 'password1', 'password2')
-    #         },
-    #     ),
-    # )
+
 admin.site.register(MyUser, MyUserAdmin)
 admin.site.unregister(Group)

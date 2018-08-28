@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
-
+from dabs.utils import Utils
 
 from .models import MyUser
 
@@ -15,8 +15,8 @@ class UserAdminCreationForm(forms.ModelForm):
 
     def clean_email(self):
         email = self.cleaned_data.get('email')
-        qs = MyUser.objects.get(email=email)
-        if qs.exists():
+        qs = Utils.get_or_none(MyUser, email=email)
+        if qs is not None:
             raise forms.ValidationError("Email already registered")
         return email
 

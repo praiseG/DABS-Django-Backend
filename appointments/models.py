@@ -22,7 +22,7 @@ class Appointment(models.Model):
     status = models.CharField(choices=STATUSES, default='new', max_length=15)
 
     def __str__(self):
-        return self.assigned_to
+        return "for {} by Dr {}".format(self.patient, self.assigned_to)
 
 
 class Treatment(models.Model):
@@ -31,4 +31,4 @@ class Treatment(models.Model):
     prescription = models.TextField(max_length=400)
 
     def __str__(self):
-        return self.appointment.patient.name
+        return "for {}".format(self.appointment.patient.name)
