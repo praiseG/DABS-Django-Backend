@@ -12,4 +12,4 @@ migrations/
 !**/migrations
 !**/migrations/__init__.py
 
-local.py
+dabs/settings/local.py
