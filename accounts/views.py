@@ -1,9 +1,5 @@
-from django.shortcuts import render
 from django.core.exceptions import ObjectDoesNotExist
-from rest_framework.viewsets import GenericViewSet
-from rest_framework.mixins import (
-    ListModelMixin, CreateModelMixin, UpdateModelMixin, RetrieveModelMixin,
-)
+from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import (
    IsAdminUser
 )
@@ -20,14 +16,7 @@ from rest_framework.decorators import action
 from .serializers import AccountSer, PasswordSer, UpdateSer
 from .models import MyUser
 
-
-# uses custom  viewset to leave out Destroy action
-class AccountViewSet(ListModelMixin,
-                     RetrieveModelMixin,
-                     CreateModelMixin,
-                     UpdateModelMixin,
-                     GenericViewSet
-                     ):
+class AccountViewSet(ModelViewSet):
     queryset = MyUser.objects.all()
     filter_fields = ['name', 'email', 'role', 'is_staff', 'is_active']
     ordering_fields = ('name', 'email', )

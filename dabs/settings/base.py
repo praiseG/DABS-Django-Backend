@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'graphene_django',
     'django_filters',
+    'safedelete',
 ]
 
 MIDDLEWARE = [

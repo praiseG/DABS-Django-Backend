@@ -34,6 +34,7 @@ router.register(r'accounts', AccountViewSet)
 router.register(r'patients', PatientViewset)
 router.register(r'appointments', AppointmentViewSet, base_name='appointment')
 
+
 # GraphQL Route
 class DabGraphQLView(LoginRequiredMixin, GraphQLView):
     pass

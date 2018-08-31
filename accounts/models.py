@@ -5,9 +5,11 @@ from django.contrib.auth.models import (
     PermissionsMixin, AbstractBaseUser, BaseUserManager
 )
 from django.utils import timezone
+from safedelete.managers import SafeDeleteManager
+from safedelete.models import SafeDeleteModel, NO_DELETE
 
 
-class MyUserManager(BaseUserManager):
+class MyUserManager(BaseUserManager, SafeDeleteManager):
     def create_user(self, email, name, designation, password, **kwargs):
         now = timezone.local(timezone.now())
         if not email:
@@ -37,7 +39,8 @@ class MyUserManager(BaseUserManager):
         return self.get(email=email_)
 
 
-class MyUser(AbstractBaseUser):
+class MyUser(SafeDeleteModel, AbstractBaseUser):
+    _safedelete_policy = NO_DELETE
     RCHOICES = (
         ('doctor', 'Doctor'),
         ('manager', 'Manager'),

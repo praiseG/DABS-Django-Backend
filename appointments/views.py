@@ -1,7 +1,5 @@
-from rest_framework.viewsets import GenericViewSet
+from rest_framework.viewsets import GenericViewSet, ModelViewSet
 from rest_framework.mixins import (
-    ListModelMixin,
-    RetrieveModelMixin,
     CreateModelMixin,
     UpdateModelMixin,
 )
@@ -23,12 +21,7 @@ from .permissions import (
 from .models import Appointment, Treatment
 
 
-class AppointmentViewSet(ListModelMixin,
-                         RetrieveModelMixin,
-                         CreateModelMixin,
-                         UpdateModelMixin,
-                         GenericViewSet
-                         ):
+class AppointmentViewSet(ModelViewSet):
     def get_queryset(self):
         if self.request.user.is_doctor:
             return Appointment.objects.filter(assigned_to=self.request.user)
