@@ -8,6 +8,8 @@ These instructions will get you a copy of the project up and running on your loc
 	* Python 3
 	* Django 1.11.15 or above
 	* Django Rest Framework
+	* Graphene-django 2.1.0
+	* Django-Filter 1.1.0
 	
 ### Installation
 A step by step guide on how to get a development environment running
