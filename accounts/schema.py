@@ -1,5 +1,6 @@
-from graphene.relay import Node
-from graphene import ObjectType, AbstractType
+import json
+import graphene
+from graphene import relay, AbstractType, InputObjectType
 from graphene_django.filter import DjangoFilterConnectionField
 from graphene_django import DjangoObjectType
 
@@ -16,24 +17,75 @@ class AccountNode(DjangoObjectType):
             'role': ['exact'],
         }
         # filter_fields = ['role', 'name', 'email']
-        interfaces = (Node, )
+        interfaces = (relay.Node, )
+
+
+class AccountUpdateInput(InputObjectType):
+    ROLES = [
+        ('doctor', 'Doctor'),
+        ('helpdesk', 'Helpdesk'),
+        ('manager', 'Manager')
+    ]
+    email = graphene.String(required=True)
+    name = graphene.String(required=True)
+    designation = graphene.String(required=True)
+    role = graphene.Enum('role', ROLES)
+    is_staff = graphene.Boolean()
+    is_superuser = graphene.Boolean()
+    is_active = graphene.Boolean()
+
+
+class ResetPasswordInput(InputObjectType):
+    password1 = graphene.String(required=True)
+    password2 = graphene.String(required=True)
+
+
+class AccountCreateInput(
+    AccountUpdateInput,
+    ResetPasswordInput,
+    InputObjectType
+):
+    pass
+
+# class AccountCreateInput(InputObjectType):
+#     email = graphene.String(required=True)
+#     name = graphene.String(required=True)
+#     designation = graphene.String(required=True)
+#     password = graphene.String(required=True)
+#     password2 = graphene.String(required=True)
+#     role = graphene.String()
+#     is_staff = graphene.Boolean()
+#     is_superuser = graphene.Boolean()
+#     is_active = graphene.Boolean()
+
+
+class CreateAccountMutation(relay.ClientIDMutation):
+    class Input:
+        account = graphene.Argument(AccountCreateInput)
+
+    status = graphene.Int()
+    errors = graphene.String()
+    new_account = graphene.Field(AccountNode)
+
+    @classmethod
+    def mutate_and_get_payload(cls, args, context, info):
+        if not context.user.is_authenticated():
+            return cls(status=403)
+        user_data = args.get('account')
+        password1 = user_data['password1']
+        password2 = user_data['password2']
+        if password2 != password1:
+            return cls(status=400, errors=json.dumps({"detail":"Passwords do not match"}))
+        obj = MyUser.objects.create(**user_data)
+        obj.set_password(password1)
+        obj.save()
+        return cls(status=200, new_account=obj)
 
 
 class AccountQuery(AbstractType):
     accounts = DjangoFilterConnectionField(AccountNode)
-    account = Node.Field(AccountNode)
+    account = relay.Node.Field(AccountNode)
 
-    # def resolve_accounts(self, info, **kwargs):
-    #     return MyUser.objects.all()
-    #
-    # def resolve_doctors(self, info, **kwargs):
-    #     return MyUser.objects.filter(role='doctor')
-    #
-    # def resolve_staff(self, info, **kwargs):
-    #     return MyUser.objects.exclude(role='doctor')
-    #
-    # def resolve_account(self, info, **kwargs):
-    #     id = kwargs.get('id')
-    #     if id is not None:
-    #         return MyUser.objects.get(pk=id)
-    #     return None
+
+class AccountMutations(AbstractType):
+    create_account = CreateAccountMutation.Field()

@@ -41,11 +41,12 @@ class DabGraphQLView(LoginRequiredMixin, GraphQLView):
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'auth-api/', include('rest_framework.urls')),
-    url(r'drf-auth-token/', obtain_jwt_token),
-    url(r'drf-refresh-token', refresh_jwt_token),
-    url(r'drf-verify-token', verify_jwt_token),
-    url(r'api/v1/', include(router.urls)),
-    # url(r'api/v2/', csrf_exempt(DabGraphQLView.as_view(graphiql=True))),
-    url(r'api/v2/', csrf_exempt(GraphQLView.as_view(graphiql=True))),
+    url(r'^auth-api/', include('rest_framework.urls')),
+    url(r'^api/auth/token/', obtain_jwt_token),
+    url(r'^api/refresh/token/', refresh_jwt_token),
+    url(r'^api/verify/token/', verify_jwt_token),
+    url(r'^api/v1/', include(router.urls)),
+    # url(r'^api/v2/', csrf_exempt(DabGraphQLView.as_view(graphiql=True))),
+    url(r'^api/v2/', csrf_exempt(GraphQLView.as_view(batch=True))),
+    url(r'^gql', csrf_exempt(GraphQLView.as_view(graphiql=True))),
 ]

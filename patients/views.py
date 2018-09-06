@@ -32,6 +32,10 @@ class PatientViewset(ModelViewSet):
             serializer_class = PatientSer
         return serializer_class
 
+    # def create(self, request, *args, **kwargs): #registered_by
+    #     pass
+
+
     @action(methods=['GET'], detail=True, url_path='appointments')
     def get_appointments(self, request, pk=None):
         patient = self.get_object()

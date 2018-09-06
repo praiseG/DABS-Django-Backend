@@ -16,7 +16,7 @@ class Patient(SafeDeleteModel):
     mobile = models.CharField(max_length=30, unique=True)
     disability = models.CharField(max_length=255, blank=True, null=True)
     registered_on = models.DateTimeField(auto_now_add=True)
-    registered_by = models.ForeignKey(MyUser, on_delete=models.PROTECT)
+    registered_by = models.ForeignKey(MyUser)
 
     def __str__(self):
         return "{}".format(self.name)
