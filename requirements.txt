@@ -3,6 +3,7 @@ asn1crypto==0.24.0
 cffi==1.11.5
 cryptography==2.3.1
 Django==1.11.15
+django-cors-headers==2.4.0
 django-dotenv==1.4.2
 django-environ==0.4.5
 django-filter==1.1.0
