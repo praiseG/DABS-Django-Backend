@@ -21,6 +21,7 @@ class Appointment(SafeDeleteModel):
     patient = models.ForeignKey(Patient)
     logged_by = models.ForeignKey(MyUser)
     description = models.TextField(max_length=400)
+    date = models.DateTimeField()
     comment = models.CharField(blank=True, null=True, max_length=255)
     assigned_to = models.ForeignKey(MyUser, related_name='doctor_assigned')
     logged_at = models.DateTimeField(auto_now_add=True)
