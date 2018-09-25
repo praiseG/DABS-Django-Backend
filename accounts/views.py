@@ -22,6 +22,9 @@ class AccountViewSet(ModelViewSet):
     ordering_fields = ('name', 'email', )
     search_fields = ('name', 'email',)
 
+    def get_queryset(self):
+        return MyUser.objects.exclude(role='doctor');
+    
     def get_permissions(self):
         print(""""Action""")
         print(self.action)
@@ -74,3 +77,9 @@ class AccountViewSet(ModelViewSet):
             return Response({'message': 'Password Reset Susseccful'})
         else:
             return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
+
+    @action(methods=['GET'], url_path='doctors', detail=False)
+    def get_doctors(self, request):
+        doctors = MyUser.objects.filter(role='doctor')
+        serializer = self.get_serializer(doctors, many=True)
+        return Response(serializer.data)

@@ -156,7 +156,8 @@ REST_FRAMEWORK = {
         'django_filters.rest_framework.DjangoFilterBackend',
         'rest_framework.filters.OrderingFilter',
         'rest_framework.filters.SearchFilter',
-    )
+    ),
+    'JWT_EXPIRATION_DELTA': timedelta(minutes=30),
 }
 
 CORS_ORIGIN_ALLOW_ALL = True
@@ -167,5 +168,5 @@ GRAPHENE = {
 }
 
 GRAPHQL_JWT = {
-    'JWT_EXPIRATION_DELTA': timedelta(minutes=15),
+    'JWT_EXPIRATION_DELTA': timedelta(minutes=30),
 }
