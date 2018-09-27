@@ -16,10 +16,10 @@ class PatientSer(HyperlinkedModelSerializer):
             'mobile',
             'address',
             'age',
+            # 'history',
             'disability',
             'registered_on',
             'registered_by',
-            # 'history',
             'url',
 
         )

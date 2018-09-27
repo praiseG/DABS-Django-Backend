@@ -11,6 +11,7 @@ class AppointmentSer(HyperlinkedModelSerializer):
         fields = (
             'patient',
             'logged_by',
+            'date',
             'assigned_to',
             'logged_at',
             'description',
@@ -19,7 +20,7 @@ class AppointmentSer(HyperlinkedModelSerializer):
             'updated_at',
             'url',
         )
-        # depth = 1
+        depth = 1
         read_only_fields = (
             'logged_at',
             'updated_at',

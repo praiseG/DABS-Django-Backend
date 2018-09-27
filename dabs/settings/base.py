@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 
 import os
 import pymysql
-from datetime import timedelta
+import datetime
 
 pymysql.install_as_MySQLdb()
 
@@ -157,8 +157,15 @@ REST_FRAMEWORK = {
         'rest_framework.filters.OrderingFilter',
         'rest_framework.filters.SearchFilter',
     ),
-    'JWT_EXPIRATION_DELTA': timedelta(minutes=30),
 }
+
+JWT_AUTH = {
+    'JWT_ALLOW_REFRESH': True,
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(hours=1),
+    'JWT_REFRESH_EXPIRATION_DELTA': datetime.timedelta(days=7),
+    'JWT_RESPONSE_PAYLOAD_HANDLER': 'accounts.views.jwt_response_payload_handler',
+}
+
 
 CORS_ORIGIN_ALLOW_ALL = True
 
@@ -168,5 +175,5 @@ GRAPHENE = {
 }
 
 GRAPHQL_JWT = {
-    'JWT_EXPIRATION_DELTA': timedelta(minutes=30),
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(minutes=30),
 }

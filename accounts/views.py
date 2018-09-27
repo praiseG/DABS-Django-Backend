@@ -83,3 +83,9 @@ class AccountViewSet(ModelViewSet):
         doctors = MyUser.objects.filter(role='doctor')
         serializer = self.get_serializer(doctors, many=True)
         return Response(serializer.data)
+
+def jwt_response_payload_handler(token, user=None, request=None):
+    return {
+        'token': token,
+        'user': AccountSer(user, context={'request': request}).data
+    }
