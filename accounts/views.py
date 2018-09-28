@@ -22,8 +22,10 @@ class AccountViewSet(ModelViewSet):
     ordering_fields = ('name', 'email', )
     search_fields = ('name', 'email',)
 
-    def get_queryset(self):
-        return MyUser.objects.exclude(role='doctor');
+    def list(self,request):
+        accounts = MyUser.objects.exclude(role='doctor');
+        serializer = self.get_serializer(accounts, many=True);
+        return Response(serializer.data)
     
     def get_permissions(self):
         print(""""Action""")

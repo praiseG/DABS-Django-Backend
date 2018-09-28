@@ -10,6 +10,7 @@ class AccountSer(HyperlinkedModelSerializer):
     class Meta:
         model = MyUser
         fields = (
+            'id',
             'email',
             'name',
             'designation',
