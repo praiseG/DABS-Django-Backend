@@ -6,7 +6,7 @@ from rest_framework.serializers import (
 from .models import MyUser
 
 
-class AccountSer(HyperlinkedModelSerializer):
+class AccountSer(ModelSerializer):
     class Meta:
         model = MyUser
         fields = (
@@ -21,16 +21,16 @@ class AccountSer(HyperlinkedModelSerializer):
             'created_at',
             'last_login',
             'password',
-            'url',
         )
         read_only_fields = (
             'created_at',
             'last_login',
+            'id',
         )
         extra_kwargs = {'password': {'write_only': True}}
 
 
-class UpdateSer(HyperlinkedModelSerializer):
+class UpdateSer(ModelSerializer):
     class Meta:
         model = MyUser
         fields = (

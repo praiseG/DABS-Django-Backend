@@ -22,16 +22,14 @@ class AccountViewSet(ModelViewSet):
     ordering_fields = ('name', 'email', )
     search_fields = ('name', 'email',)
 
-    def list(self,request):
-        accounts = MyUser.objects.exclude(role='doctor');
-        serializer = self.get_serializer(accounts, many=True);
-        return Response(serializer.data)
+    # def list(self,request):
+    #     accounts = MyUser.objects.exclude(role='doctor');
+    #     serializer = self.get_serializer(accounts, many=True);
+    #     return Response(serializer.data)
     
     def get_permissions(self):
         print(""""Action""")
         print(self.action)
-        # if self.action in ['create', 'update', 'list', 'get_other_staff']:
-        #     permission_classes = [IsAdminUser]
         if self.action in ['get_doctors', 'retrieve']:
             permission_classes = [IsAdminOrStaff]
         elif self.action == 'reset_password':
@@ -49,13 +47,24 @@ class AccountViewSet(ModelViewSet):
             serializer_class = AccountSer
         return serializer_class
 
-    def create(self, request):
-        serializer = AccountSer(data=request.data)
+    def create(self, request):    
+        serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():
-            user = MyUser(serializer.data)
-            user.set_password(serializer.data['password'])
+            user = MyUser(
+                name=serializer.data['name'],
+                email=serializer.data['email'],
+                role=serializer.data['role'],
+                designation=serializer.data['designation'],
+                is_active=serializer.data['is_active'],
+                is_staff=serializer.data['is_staff'],
+                is_superuser=serializer.data['is_superuser'],
+            )
+            print("Serializer Data")
+            print("here" + request.data['password'])
+            user.set_password(request.data['password'])
             user.save()
-            return Response({'message': 'Account Creation Successful'})
+            saved_user = self.get_serializer(user)
+            return Response(saved_user.data)
         else:
             return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
 
