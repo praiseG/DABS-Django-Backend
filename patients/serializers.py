@@ -11,6 +11,7 @@ class PatientSer(HyperlinkedModelSerializer):
     class Meta:
         model = Patient
         fields = (
+            'id',
             'name',
             'email',
             'mobile',
@@ -23,4 +24,4 @@ class PatientSer(HyperlinkedModelSerializer):
             'url',
 
         )
-        read_only_fields = ('registered_on', 'registered_by',)
+        read_only_fields = ('registered_on', 'registered_by', 'id')

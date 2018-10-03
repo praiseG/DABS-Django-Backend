@@ -9,6 +9,7 @@ class AppointmentSer(HyperlinkedModelSerializer):
     class Meta:
         model = Appointment
         fields = (
+            'id',
             'patient',
             'logged_by',
             'date',
