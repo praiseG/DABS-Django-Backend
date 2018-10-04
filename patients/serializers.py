@@ -1,8 +1,12 @@
-from rest_framework.serializers import HyperlinkedModelSerializer, HyperlinkedIdentityField
+from rest_framework.serializers import (
+    HyperlinkedModelSerializer, 
+    HyperlinkedIdentityField,
+    ModelSerializer
+)
 
 from .models import Patient
 
-class PatientSer(HyperlinkedModelSerializer):
+class PatientSer(ModelSerializer):
     # history = HyperlinkedIdentityField(
     #     view_name='patients:history',
     #     lookup_field='pk'
@@ -21,7 +25,5 @@ class PatientSer(HyperlinkedModelSerializer):
             'disability',
             'registered_on',
             'registered_by',
-            'url',
-
         )
         read_only_fields = ('registered_on', 'registered_by', 'id')

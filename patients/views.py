@@ -2,7 +2,11 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from rest_framework.status import HTTP_404_NOT_FOUND
+from rest_framework.status import(
+    HTTP_404_NOT_FOUND, 
+    HTTP_400_BAD_REQUEST,
+    HTTP_500_INTERNAL_SERVER_ERROR
+)
 from .permissions import IsStaffWithRole
 from .serializers import PatientSer
 from appointments.serializers import AppointmentSer, TreatmentSer
@@ -32,9 +36,28 @@ class PatientViewset(ModelViewSet):
             serializer_class = PatientSer
         return serializer_class
 
-    # def create(self, request, *args, **kwargs): #registered_by
-    #     pass
-
+    def create(self, request, *args, **kwargs): #registered_by
+        try:
+            serializer = self.get_serializer(data=request.data)
+            if serializer.is_valid():
+                patient = Patient(
+                    name=serializer.data['name'],
+                    email=serializer.data['email'],
+                    mobile=serializer.data['mobile'],
+                    age=serializer.data['age'],
+                    address=serializer.data['address'],
+                    disability=serializer.data['disability'],
+                )
+                patient.registered_by = request.user
+                patient.save()
+                serialized = self.get_serializer(patient)
+                return Response(serialized.data)
+            return Response(serializer.errors, status = HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            print("e here")
+            print(e)
+            print(type(e))
+            return Response({'error': str(e)}, status = HTTP_500_INTERNAL_SERVER_ERROR)
 
     @action(methods=['GET'], detail=True, url_path='appointments')
     def get_appointments(self, request, pk=None):
